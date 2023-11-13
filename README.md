@@ -8,15 +8,15 @@ Este conjunto de instrucciones te guiará a través de la implementación del si
 
    Antes de comenzar, clona el repositorio utilizando el siguiente comando:
 
-   ```sh
+```sh
    git clone https://github.com/alanBonnet/docker-swarm-tp-4.git
-   ```
+```
 
-   Luego, navega al directorio clonado:
+Luego, navega al directorio clonado:
 
-   ```sh
+```sh
    cd docker-swarm-tp-4
-   ```
+```
 
 2. **Construir Imágenes:**
 
@@ -24,27 +24,30 @@ Este conjunto de instrucciones te guiará a través de la implementación del si
 
    Imagen de MySQL:
 
-   ```sh
+```sh
    docker build -t db_mysql ./mysql
-   ```
+```
 
-   Imagen del servicio REST:
+Imagen del servicio REST:
 
-   ```sh
+```sh
    docker build -t rest_nodejs ./rest
-   ```
+```
 
-   Imagen del servicio SOAP:
+Imagen del servicio SOAP:
 
-   ```sh
+```sh
    docker build -t soap_nodejs ./soap
-   ```
+```
 
-   Imagen del servicio para visualizar y consumir los anteriores:
+Imagen del servicio para visualizar y consumir los anteriores:
 
-   ```sh
+```sh
    docker build -t front_react ./front
-   ```
+```
+
+**Nota:**
+La construcción de las imágenes puede tardar aproximadamente 10 minutos.
 
 3. **Despliegue del Sistema:**
 
@@ -52,23 +55,26 @@ Este conjunto de instrucciones te guiará a través de la implementación del si
 
    Recuerda tener el swarm iniciado:
 
-   ```sh
+```sh
    docker swarm init
-   ```
+```
 
-   Y con el siguiente comando desplegamos los servicios.
+Luego, despliega los servicios con el siguiente comando:
 
-   ```bash
+```sh
    docker stack deploy -c docker-compose.yml tp4
-   ```
+```
 
-   Esto iniciará la implementación de tu sistema en Docker Swarm. Ten en cuenta que la primera vez podría tardar 2 a 3 minutos para que todos los servicios y la conexión a la base de datos se establezcan.
+Esto iniciará la implementación de tu sistema en Docker Swarm. Ten en cuenta que la primera vez podría tardar 2 a 3 minutos para que todos los servicios y la conexión a la base de datos se establezcan.
 
 ## Uso del Sistema
 
 1. **Acceder a la Aplicación Frontend:**
 
    Una vez que la implementación esté completa, puedes acceder a la aplicación frontend desde [http://localhost:3000](http://localhost:3000).
+
+   **Nota:**
+   Es posible que necesites actualizar la página varias veces (F5) ya que algunas réplicas pueden no renderizar correctamente la página.
 
 2. **Servicios Web:**
 
@@ -82,5 +88,25 @@ Este conjunto de instrucciones te guiará a través de la implementación del si
      - Usuario: root
      - Contraseña: root
      - Base de datos: personas
+
+4. **Ajuste de Réplicas del Frontend:**
+
+   Para mejorar la estabilidad y evitar problemas de rendimiento, reduce las réplicas del servicio `tp4_front` a 1 utilizando el siguiente comando:
+
+```sh
+   docker service scale tp4_front=1
+```
+
+## Detener y Limpiar el Sistema
+
+Para detener y limpiar los servicios y recursos de Docker Swarm, puedes utilizar los siguientes comandos:
+
+```sh
+   docker stack rm tp4
+```
+
+```sh
+   docker swarm leave --force
+```
 
 ¡Listo! Ahora deberías tener tu sistema ejecutándose en Docker Swarm.
