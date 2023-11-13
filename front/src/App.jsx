@@ -5,9 +5,9 @@ function App() {
   const [personas, setPersonas] = useState([
     {
       id: 1,
-      nombres: 'hola',
-      apellidos: 'puflito',
-      dni: 3000000
+      nombres: 'numero1',
+      apellidos: 'numberone',
+      dni: 454545456
     }
   ])
   const consultarPersonas = async () => {
